@@ -26,6 +26,12 @@ export async function addMessages(messages: AIMessage[]) {
   await db.write();
 }
 
+export async function saveToolResponse(toolCallId: string, content: string) {
+  return await addMessages([
+    { role: 'tool', content, tool_call_id: toolCallId },
+  ]);
+}
+
 export async function getMessages() {
   const db = await getDb();
   return db.data.messages.map(removeMetadata);
