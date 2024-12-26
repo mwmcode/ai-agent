@@ -1,5 +1,5 @@
 import { JSONFilePreset } from 'lowdb/node';
-import type { AIMessage, DataT, MessageWithMetadata } from './types.ts';
+import type { AIMessage, DataT, MessageWithMetadata } from './types';
 
 export function addMetadata(message: AIMessage): MessageWithMetadata {
   return {

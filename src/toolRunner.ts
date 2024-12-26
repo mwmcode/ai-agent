@@ -1,8 +1,12 @@
 import type OpenAI from 'openai';
-
-function getWeather(params: { userMessage: string; toolArgs: any }) {
-  return 'very cold. 17deg';
-}
+import {
+  dadJoke,
+  generateImage,
+  reddit,
+  generateImageToolDefinition,
+  redditToolDefinition,
+  dadJokeToolDefinition,
+} from './services/index';
 
 export async function runTool(
   toolCall: OpenAI.Chat.Completions.ChatCompletionMessageToolCall,
@@ -12,11 +16,16 @@ export async function runTool(
     userMessage,
     toolArgs: JSON.parse(toolCall.function.arguments || '{}'),
   };
+
   switch (toolCall.function.name) {
-    case 'get_weather':
-      return await getWeather(input);
+    case generateImageToolDefinition.name:
+      return generateImage(input);
+    case dadJokeToolDefinition.name:
+      return dadJoke(input);
+    case redditToolDefinition.name:
+      return reddit(input);
 
     default:
-      throw new Error(`Unknown tool: ${toolCall.function.name}`);
+      return `Never run this tool (${toolCall.function.name}) again! Ever!`;
   }
 }

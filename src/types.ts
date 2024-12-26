@@ -9,6 +9,8 @@ export interface ToolFn<A = any, T = any> {
   (input: { userMessage: string; toolArgs: A }): Promise<T>;
 }
 
+export type ToolFnParams<A> = { userMessage: string; toolArgs: A };
+
 export type MessageWithMetadata = AIMessage & {
   id: string;
   createdAt: string;

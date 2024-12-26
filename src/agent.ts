@@ -1,8 +1,8 @@
-import { runLLM } from './llm.ts';
-import { addMessages, getMessages, saveToolResponse } from './memory.ts';
-import { runTool } from './toolRunner.ts';
-import { ToolT } from './types.ts';
-import { logMessage, showLoader } from './ui.ts';
+import { runLLM } from './llm';
+import { addMessages, getMessages, saveToolResponse } from './memory';
+import { runTool } from './toolRunner';
+import { ToolT } from './types';
+import { logMessage, showLoader } from './ui';
 
 export async function runAgent({
   turns = 10,
@@ -18,12 +18,15 @@ export async function runAgent({
   while (true) {
     const history = await getMessages();
     const response = await runLLM({ messages: history, tools });
+
     await addMessages([response]);
+
     if (response.content) {
       loader.stop();
       logMessage(response);
       return await getMessages();
     }
+
     if (response.tool_calls) {
       const toolCall = response.tool_calls[0];
       logMessage(response);

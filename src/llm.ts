@@ -1,6 +1,7 @@
-import type { AIMessage, ToolT } from './types.ts';
-import { openai } from './ai.ts';
+import type { AIMessage, ToolT } from './types';
+import { openai } from './ai';
 import { zodFunction } from 'openai/helpers/zod.mjs';
+import { systemPrompt } from './systemPrompt';
 
 export async function runLLM({
   messages,
@@ -12,7 +13,7 @@ export async function runLLM({
   const formattedTools = tools?.map(zodFunction) ?? [];
   const response = await openai.chat.completions.create({
     model: 'gpt-4o-mini',
-    messages,
+    messages: [{ role: 'system', content: systemPrompt }, ...messages],
     temperature: 0.1,
     tools: formattedTools,
     tool_choice: 'auto',
